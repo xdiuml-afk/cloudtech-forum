@@ -39,6 +39,7 @@ func main() {
 	r.HandleFunc("/posts", handler.CreateHandler).Methods("POST")
 	r.HandleFunc("/posts", handler.IndexHandler).Methods("GET")
 	r.HandleFunc("/posts/{id:[0-9]+}", handler.ShowHandler).Methods("GET")
+	r.HandleFunc("/posts/{id:[0-9]+}", handler.UpdateHandler).Methods("PUT")
 	// APIサーバを起動
 	log.Println("APIサーバを起動しました。ポート: " + apiport)
 	if err := http.ListenAndServe(":"+apiport, r); err != nil {

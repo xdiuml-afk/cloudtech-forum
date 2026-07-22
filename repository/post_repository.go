@@ -90,3 +90,28 @@ func SearchPost(id int) (model.Post, error) {
 	// 読み込んだ投稿データを返却
 	return post, nil
 }
+
+// 投稿の更新
+func UpdatePost(id int, content string, createdUserID int) (int64, error) {
+	// SQLを定義
+	query := "UPDATE posts SET content = ?, user_id = ? WHERE id = ?"
+
+	// UPDATEのSQLを実行
+	result, err := db.Exec(query, content, createdUserID, id)
+	if err != nil {
+		// エラーログの出力
+		log.Printf("投稿の更新に失敗しました: %v", err)
+		return 0, fmt.Errorf("投稿の更新に失敗しました: %w", err)
+	}
+
+	// 影響を受けた行数を取得
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		// エラーログの出力
+		log.Printf("影響を受けた行数の取得に失敗しました: %v", err)
+		return 0, fmt.Errorf("影響を受けた行数の取得に失敗しました: %w", err)
+	}
+
+	// 影響を受けた行数を返す
+	return rowsAffected, nil
+}
