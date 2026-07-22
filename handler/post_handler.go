@@ -3,9 +3,12 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	model "cloudtech-forum/model"
 	"cloudtech-forum/repository"
+
+	"github.com/gorilla/mux"
 )
 
 // Createハンドラ関数
@@ -51,4 +54,23 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	// postsデータのスライスをレスポンスとして設定
 	json.NewEncoder(w).Encode(posts)
+}
+
+// Showハンドラ関数
+func ShowHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+
+	// 検索処理の実行
+	post, err := repository.SearchPost(id)
+	if err != nil {
+		http.Error(w, "投稿データの検索に失敗しました", http.StatusInternalServerError)
+		return
+	}
+
+	// ステータスコードに「200：OK」を設定
+	w.WriteHeader(http.StatusOK)
+
+	// レスポンスのBodyに、検索した投稿データを設定
+	json.NewEncoder(w).Encode(post)
 }
