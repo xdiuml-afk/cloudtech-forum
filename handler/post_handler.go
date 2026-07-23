@@ -8,12 +8,17 @@ import (
 
 	model "cloudtech-forum/model"
 	"cloudtech-forum/repository"
+	"cloudtech-forum/util"
 
 	"github.com/gorilla/mux"
 )
 
 // Createハンドラ関数
 func CreateHandler(w http.ResponseWriter, r *http.Request) {
+	if !util.IsAuthenticated(r) {
+		http.Error(w, "認証エラー", http.StatusUnauthorized)
+		return
+	}
 	// リクエストのBodyデータを格納するオブジェクトを定義
 	var post model.Post
 
@@ -43,6 +48,10 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 // Indexハンドラ関数
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	if !util.IsAuthenticated(r) {
+		http.Error(w, "認証エラー", http.StatusUnauthorized)
+		return
+	}
 	// 検索処理の実行
 	posts, err := repository.SearchPostAll()
 	if err != nil {
@@ -59,6 +68,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 // Showハンドラ関数
 func ShowHandler(w http.ResponseWriter, r *http.Request) {
+	if !util.IsAuthenticated(r) {
+		http.Error(w, "認証エラー", http.StatusUnauthorized)
+		return
+	}
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 
@@ -78,6 +91,11 @@ func ShowHandler(w http.ResponseWriter, r *http.Request) {
 
 // Updateハンドラ関数
 func UpdateHandler(w http.ResponseWriter, r *http.Request) {
+	if !util.IsAuthenticated(r) {
+		http.Error(w, "認証エラー", http.StatusUnauthorized)
+		return
+	}
+
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 
@@ -115,6 +133,10 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 // Deleteハンドラ関数
 func DeleteHandler(w http.ResponseWriter, r *http.Request) {
+	if !util.IsAuthenticated(r) {
+		http.Error(w, "認証エラー", http.StatusUnauthorized)
+		return
+	}
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 

@@ -8,4 +8,10 @@ require (
 	github.com/joho/godotenv v1.5.1
 )
 
-require filippo.io/edwards25519 v1.2.0 // indirect
+require (
+	filippo.io/edwards25519 v1.2.0 // indirect
+	github.com/MicahParks/keyfunc v1.9.0 // indirect
+	github.com/aws/aws-sdk-go v1.55.8 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
+)
